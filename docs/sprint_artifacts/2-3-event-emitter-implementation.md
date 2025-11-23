@@ -297,24 +297,65 @@ After this story, Story 2.4 will implement the BaseGame abstract class, which wi
 
 ### Implementation Status
 
-_To be filled by dev agent during implementation_
+**Status:** ✅ COMPLETE  
+**Implemented By:** Amelia (Dev Agent)  
+**Date:** 2025-11-24  
+**All ACs Satisfied:** Yes
+
+- ✅ AC1: EventEmitter Class Implementation - Complete with Map/Set registry
+- ✅ AC2: Event Subscription Methods - on() method working
+- ✅ AC3: Event Unsubscription and Emission - off() and emit() implemented
 
 ### Completion Notes
 
-_To be filled by dev agent_
+Successfully implemented EventEmitter class:
+
+1. **EventEmitter Class** - Created src/EventEmitter.ts:
+
+   - Private listeners: Map<GameEvent, Set<EventCallback>>
+   - Type-safe event handling
+   - Comprehensive JSDoc documentation
+
+2. **on() Method** - Event subscription:
+
+   - Registers callbacks in Set for each event
+   - Initializes Map entry if needed
+   - Supports multiple callbacks per event
+
+3. **off() Method** - Event unsubscription:
+
+   - Removes specific callback from Set
+   - Handles missing callbacks gracefully
+
+4. **emit() Method** - Event emission (protected):
+   - Calls all registered callbacks for event
+   - Passes event data to callbacks
+   - Error handling wraps each callback in try-catch
+   - Logs errors without breaking other callbacks
+
+Build successful with all type definitions.
 
 ### Debug Log
 
-_To be filled by dev agent if issues encountered_
+No issues encountered. EventEmitter implementation straightforward.
 
 ### Files Changed
 
-_To be filled by dev agent_
+**Created:**
+
+- `/packages/core/src/EventEmitter.ts`
+
+**Modified:**
+
+- `/packages/core/src/index.ts` - Exported EventEmitter class
+
+**Git Commit:** Part of `feat: Add TypeScript types and EventEmitter to @minigame/core`
 
 ---
 
 ## Change Log
 
-| Date       | Version | Changes                | Author   |
-| ---------- | ------- | ---------------------- | -------- |
-| 2025-11-24 | 1.0     | Initial story creation | SM (Bob) |
+| Date       | Version | Changes                | Author       |
+| ---------- | ------- | ---------------------- | ------------ |
+| 2025-11-24 | 1.0     | Initial story creation | SM (Bob)     |
+| 2025-11-24 | 2.0     | Story implemented      | Dev (Amelia) |

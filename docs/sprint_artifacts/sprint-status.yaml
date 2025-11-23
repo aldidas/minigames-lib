@@ -47,12 +47,12 @@ development_status:
 
   # Epic 2: Core Package - Game Framework (6 stories)
   epic-2: backlog
-  2-1-core-package-structure: ready-for-dev
-  2-2-typescript-type-definitions: ready-for-dev
-  2-3-event-emitter-implementation: ready-for-dev
-  2-4-basegame-abstract-class: drafted
-  2-5-gameconfig-implementation: drafted
-  2-6-core-package-exports-build: drafted
+  2-1-core-package-structure: done
+  2-2-typescript-type-definitions: done
+  2-3-event-emitter-implementation: done
+  2-4-basegame-abstract-class: ready-for-dev
+  2-5-gameconfig-implementation: ready-for-dev
+  2-6-core-package-exports-build: ready-for-dev
   epic-2-retrospective: optional
 
   # Epic 3: Build & Distribution Pipeline (3 stories)
