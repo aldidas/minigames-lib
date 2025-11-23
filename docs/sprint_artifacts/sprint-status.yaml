@@ -50,16 +50,16 @@ development_status:
   2-1-core-package-structure: done
   2-2-typescript-type-definitions: done
   2-3-event-emitter-implementation: done
-  2-4-basegame-abstract-class: ready-for-dev
-  2-5-gameconfig-implementation: ready-for-dev
-  2-6-core-package-exports-build: ready-for-dev
+  2-4-basegame-abstract-class: done
+  2-5-gameconfig-implementation: done
+  2-6-core-package-exports-build: done
   epic-2-retrospective: optional
 
   # Epic 3: Build & Distribution Pipeline (3 stories)
   epic-3: backlog
-  3-1-package-metadata-npm-configuration: backlog
-  3-2-multi-format-build-configuration: backlog
-  3-3-publishing-automation-with-changesets: backlog
+  3-1-package-metadata-npm-configuration: ready-for-dev
+  3-2-multi-format-build-configuration: ready-for-dev
+  3-3-publishing-automation-changesets: ready-for-dev
   epic-3-retrospective: optional
 
   # Epic 4: MVP Game Implementations (5 stories)

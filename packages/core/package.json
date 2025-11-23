@@ -19,9 +19,17 @@
     "dev": "tsup --watch",
     "clean": "rm -rf dist"
   },
-  "keywords": ["minigame", "core", "framework", "game", "typescript"],
+  "keywords": ["minigame", "core", "framework", "game", "typescript", "html5", "canvas", "embeddable"],
   "author": "Aldi",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aldidas/minigames-lib.git",
+    "directory": "packages/core"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {},
   "devDependencies": {}
 }
