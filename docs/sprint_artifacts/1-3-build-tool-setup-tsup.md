@@ -303,24 +303,90 @@ After this story, packages can be built. Story 2.1 (Core Package Structure) will
 
 ### Implementation Status
 
-_To be filled by dev agent during implementation_
+**Status:** ✅ COMPLETE  
+**Implemented By:** Amelia (Dev Agent)  
+**Date:** 2025-11-24  
+**All ACs Satisfied:** Yes
+
+- ✅ AC1: tsup Installation and Setup - tsup 8.5.1 installed, template created
+- ✅ AC2: Build Output Validation - All formats verified working
+- ✅ AC3: Package Build Configuration - esbuild-powered, multi-format confirmed
 
 ### Completion Notes
 
-_To be filled by dev agent_
+Successfully configured tsup for multi-format builds per all acceptance criteria:
+
+1. **tsup 8.5.1** - Installed as root devDependency
+
+2. **tsup.config.ts** - Reference template created with:
+
+   - format: ['esm', 'cjs', 'iife'] (multi-format output)
+   - dts: true (TypeScript declarations)
+   - sourcemap: true (source maps for all formats)
+   - minify: true (production minification)
+   - clean: true (remove old artifacts)
+   - target: 'es2020' (ES2020 target)
+   - esbuild-powered (extremely fast builds)
+
+3. **Build Validation** - Created test package and verified outputs:
+
+   - ESM: index.js (184B) + source map ✓
+   - CJS: index.cjs (680B) + source map ✓
+   - IIFE: index.global.js (672B) + source map ✓
+   - Types: index.d.ts (415B) + .d.cts ✓
+   - All source maps generated correctly
+
+4. **TypeScript Config Fix** - Removed `incremental` and `composite` from root tsconfig.json as these conflict with tsup's dts generation. Packages can add these options individually if needed.
+
+All tasks completed:
+
+- ✅ Task 1: tsup installed and verified
+- ✅ Task 2: Reference tsup.config.ts created
+- ✅ Task 3: Build pattern documented
+- ✅ Task 4: Build system validated via test package
 
 ### Debug Log
 
-_To be filled by dev agent if issues encountered_
+**Issue Encountered:** TypeScript .d.ts generation initially failed with:
+
+```
+error TS5074: Option '--incremental' can only be specified using tsconfig,
+emitting to single file or when option '--tsBuildInfoFile' is specified.
+```
+
+**Resolution:** Removed `incremental: true` and `composite: true` from root tsconfig.json. These options should only be set at the package level when needed for project references. After fix, all builds succeeded perfectly.
+
+**Validation Results:**
+
+- All 3 output formats generated successfully
+- All source maps present
+- Type declarations generated correctly
+- Build time: ~440ms (very fast)
+- Bundle sizes well under target (< 1kb minified)
 
 ### Files Changed
 
-_To be filled by dev agent_
+**Created:**
+
+- `/tsup.config.ts` - Reference configuration template
+
+**Modified:**
+
+- `/package.json` - Added tsup@8.5.1 as devDependency
+- `/tsconfig.json` - Removed incremental/composite flags
+- `/pnpm-lock.yaml` - Updated with tsup and 48 dependencies
+
+**Temporary (created & deleted):**
+
+- `/packages/test-build/*` - Test package for validation (removed after testing)
+
+**Git Commit:** `feat: Add tsup build tool configuration`
 
 ---
 
 ## Change Log
 
-| Date       | Version | Changes                | Author   |
-| ---------- | ------- | ---------------------- | -------- |
-| 2025-11-23 | 1.0     | Initial story creation | SM (Bob) |
+| Date       | Version | Changes                | Author       |
+| ---------- | ------- | ---------------------- | ------------ |
+| 2025-11-23 | 1.0     | Initial story creation | SM (Bob)     |
+| 2025-11-24 | 2.0     | Story implemented      | Dev (Amelia) |

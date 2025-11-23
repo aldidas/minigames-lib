@@ -38,10 +38,53 @@ pnpm install
 ### Commands
 
 ```bash
-pnpm build    # Build all packages
-pnpm test     # Test all packages
-pnpm clean    # Clean all packages
+# Build all packages
+pnpm build
+
+# Watch mode for development (hot reload)
+pnpm dev
+
+# Run tests across all packages
+pnpm test
+
+# Lint all packages
+pnpm lint
+
+# Clean all build artifacts
+pnpm clean
 ```
+
+### Advanced Workspace Commands
+
+```bash
+# Filter by specific package
+pnpm --filter @minigame/core build
+pnpm --filter @minigame/snake dev
+
+# Run scripts in parallel
+pnpm -r --parallel run dev
+
+# Clean and rebuild
+pnpm clean && pnpm build
+```
+
+### Workspace Protocol
+
+Packages use the `workspace:` protocol for local dependencies:
+
+```json
+{
+  "dependencies": {
+    "@minigame/core": "workspace:^"
+  }
+}
+```
+
+This ensures:
+
+- Always uses local version during development
+- Replaced with actual version on publish
+- Hot reload works across dependent packages
 
 ## Architecture
 

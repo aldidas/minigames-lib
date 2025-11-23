@@ -6,7 +6,9 @@
   "description": "TypeScript monorepo library providing headless, event-driven HTML5 arcade games for advertising agencies",
   "scripts": {
     "build": "pnpm -r run build",
+    "dev": "pnpm -r run dev",
     "test": "pnpm -r run test",
+    "lint": "pnpm -r run lint",
     "clean": "pnpm -r run clean"
   },
   "keywords": [
