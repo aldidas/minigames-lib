@@ -57,14 +57,14 @@ development_status:
 
   # Epic 3: Build & Distribution Pipeline (3 stories)
   epic-3: backlog
-  3-1-package-metadata-npm-configuration: ready-for-dev
-  3-2-multi-format-build-configuration: ready-for-dev
-  3-3-publishing-automation-changesets: ready-for-dev
+  3-1-package-metadata-npm-configuration: done
+  3-2-multi-format-build-configuration: done
+  3-3-publishing-automation-changesets: done
   epic-3-retrospective: optional
 
   # Epic 4: MVP Game Implementations (5 stories)
   epic-4: backlog
-  4-1-snake-game-package-setup: backlog
+  4-1-snake-game-package-setup: ready-for-dev
   4-2-snake-game-implementation: backlog
   4-3-pong-game-package-implementation: backlog
   4-4-breakout-game-package-implementation: backlog

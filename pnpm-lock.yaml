@@ -20,6 +20,12 @@ importers:
 
   packages/core: {}
 
+  packages/snake:
+    dependencies:
+      '@minigame/core':
+        specifier: workspace:^
+        version: link:../core
+
 packages:
 
   '@babel/runtime@7.28.4':
