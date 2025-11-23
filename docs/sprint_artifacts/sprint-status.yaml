@@ -1,0 +1,79 @@
+# generated: 2025-11-23
+# project: minigames-lib
+# project_key: minigames-lib
+# tracking_system: file-system
+# story_location: docs/sprint_artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic exists in epic file but not contexted
+#   - contexted: Epic tech context created (required before drafting stories)
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - drafted: Story file created in stories folder
+#   - ready-for-dev: Draft approved and story context created
+#   - in-progress: Developer actively working on implementation
+#   - review: Under SM review (via code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - completed: Retrospective has been done
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epics should be 'contexted' before stories can be 'drafted'
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically drafts next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', SM reviews, then Dev moves to 'done'
+
+generated: 2025-11-23
+project: minigames-lib
+project_key: minigames-lib
+tracking_system: file-system
+story_location: docs/sprint_artifacts
+
+development_status:
+  # Epic 1: Foundation & Infrastructure (5 stories)
+  epic-1: backlog
+  1-1-monorepo-initialization: ready-for-dev
+  1-2-typescript-configuration: backlog
+  1-3-build-tool-setup-tsup: backlog
+  1-4-development-scripts-tooling: backlog
+  1-5-versioning-setup-changesets: backlog
+  epic-1-retrospective: optional
+
+  # Epic 2: Core Package - Game Framework (6 stories)
+  epic-2: backlog
+  2-1-core-package-structure: backlog
+  2-2-typescript-type-definitions: backlog
+  2-3-event-emitter-implementation: backlog
+  2-4-basegame-abstract-class: backlog
+  2-5-gameconfig-implementation: backlog
+  2-6-core-package-exports-build: backlog
+  epic-2-retrospective: optional
+
+  # Epic 3: Build & Distribution Pipeline (3 stories)
+  epic-3: backlog
+  3-1-package-metadata-npm-configuration: backlog
+  3-2-multi-format-build-configuration: backlog
+  3-3-publishing-automation-with-changesets: backlog
+  epic-3-retrospective: optional
+
+  # Epic 4: MVP Game Implementations (5 stories)
+  epic-4: backlog
+  4-1-snake-game-package-setup: backlog
+  4-2-snake-game-implementation: backlog
+  4-3-pong-game-package-implementation: backlog
+  4-4-breakout-game-package-implementation: backlog
+  4-5-game-quality-error-handling: backlog
+  epic-4-retrospective: optional
+
+  # Epic 5: Documentation & Developer Experience (3 stories)
+  epic-5: backlog
+  5-1-core-package-readme: backlog
+  5-2-game-package-readmes-snake-pong-breakout: backlog
+  5-3-root-repository-readme-examples: backlog
+  epic-5-retrospective: optional

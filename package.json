@@ -1,0 +1,22 @@
+{
+  "name": "minigames-lib",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "TypeScript monorepo library providing headless, event-driven HTML5 arcade games for advertising agencies",
+  "scripts": {
+    "build": "pnpm -r run build",
+    "test": "pnpm -r run test",
+    "clean": "pnpm -r run clean"
+  },
+  "keywords": [
+    "minigames",
+    "html5-games",
+    "typescript",
+    "monorepo",
+    "arcade-games"
+  ],
+  "author": "Aldi",
+  "license": "MIT",
+  "devDependencies": {}
+}
