@@ -9,7 +9,10 @@
     "dev": "pnpm -r run dev",
     "test": "pnpm -r run test",
     "lint": "pnpm -r run lint",
-    "clean": "pnpm -r run clean"
+    "clean": "pnpm -r run clean",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && changeset publish"
   },
   "keywords": [
     "minigames",
@@ -21,6 +24,7 @@
   "author": "Aldi",
   "license": "MIT",
   "devDependencies": {
+    "@changesets/cli": "^2.29.7",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3"
   }

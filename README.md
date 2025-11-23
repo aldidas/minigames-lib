@@ -86,6 +86,48 @@ This ensures:
 - Replaced with actual version on publish
 - Hot reload works across dependent packages
 
+## Versioning
+
+This project uses [Changesets](https://github.com/changesets/changesets) for version management and changelog generation.
+
+### Creating a Changeset
+
+After making changes to a package:
+
+```bash
+pnpm changeset
+```
+
+This will prompt you to:
+
+1. Select the packages that changed
+2. Choose the semver bump type (major/minor/patch)
+3. Write a summary of the changes
+
+### Versioning Packages
+
+When ready to create a new version:
+
+```bash
+pnpm version-packages
+```
+
+This will:
+
+- Bump versions in all affected package.json files
+- Update CHANGELOG.md files
+- Delete consumed changeset files
+
+### Publishing
+
+```bash
+pnpm release
+```
+
+This will build all packages and publish them to npm with git tags.
+
+**Note:** All @minigame/\* packages use fixed versioning (same version number).
+
 ## Architecture
 
 - `packages/core/` - @minigame/core (shared framework, types, base classes)
