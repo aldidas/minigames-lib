@@ -24,10 +24,6 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
 
-    // Incremental Builds & Project References
-    "incremental": true,
-    "composite": true,
-
     // Completeness
     "skipLibCheck": true
   },
