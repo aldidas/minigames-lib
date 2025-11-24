@@ -137,20 +137,36 @@ export class PongGame extends BaseGame<PongGameState> {
     }
 
     // Ball collision with paddles
-    if (this.checkPaddleCollision(this.ball, this.leftPaddle) || 
-        this.checkPaddleCollision(this.ball, this.rightPaddle)) {
-      this.ball.vx *= -1;
-      this.ball.speed *= 1.05; // Increase speed 5%
+    const hitLeftPaddle = this.checkPaddleCollision(this.ball, this.leftPaddle);
+    const hitRightPaddle = this.checkPaddleCollision(this.ball, this.rightPaddle);
+    
+    if (hitLeftPaddle || hitRightPaddle) {
+      // Determine which paddle BEFORE we change velocity
+      const paddle = hitLeftPaddle ? this.leftPaddle : this.rightPaddle;
       
-      // Calculate hit position for angle
-      const paddle = this.ball.vx > 0 ? this.rightPaddle : this.leftPaddle;
-      const hitPos = (this.ball.y - paddle.y) / paddle.height; // 0-1
-      this.ball.vy = (hitPos - 0.5) * 2; // -1 to 1
+      // Calculate hit position for angle (0 = top, 0.5 = center, 1 = bottom)
+      const hitPos = (this.ball.y - paddle.y) / paddle.height;
       
-      // Normalize velocity
-      const magnitude = Math.sqrt(this.ball.vx * this.ball.vx + this.ball.vy * this.ball.vy);
-      this.ball.vx /= magnitude;
-      this.ball.vy /= magnitude;
+      // Set new velocity
+      // If hit left paddle, ball should go right (vx > 0)
+      // If hit right paddle, ball should go left (vx < 0)
+      const newVx = hitLeftPaddle ? 1 : -1;
+      const newVy = (hitPos - 0.5) * 2; // -1 to 1
+      
+      // Normalize velocity to unit vector
+      const magnitude = Math.sqrt(newVx * newVx + newVy * newVy);
+      this.ball.vx = newVx / magnitude;
+      this.ball.vy = newVy / magnitude;
+      
+      // Increase speed
+      this.ball.speed *= 1.05;
+      
+      // Move ball out of paddle to prevent multiple collisions
+      if (hitLeftPaddle) {
+        this.ball.x = this.leftPaddle.x + this.leftPaddle.width + this.ball.radius + 1;
+      } else {
+        this.ball.x = this.rightPaddle.x - this.ball.radius - 1;
+      }
     }
 
     // Score points
