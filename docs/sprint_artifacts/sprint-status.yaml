@@ -66,7 +66,7 @@ development_status:
   epic-4: backlog
   4-1-snake-game-package-setup: done
   4-2-snake-game-implementation: done
-  4-3-pong-game-package-implementation: backlog
+  4-3-pong-game-package-implementation: done
   4-4-breakout-game-package-implementation: backlog
   4-5-game-quality-error-handling: backlog
   epic-4-retrospective: optional

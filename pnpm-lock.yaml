@@ -20,6 +20,12 @@ importers:
 
   packages/core: {}
 
+  packages/pong:
+    dependencies:
+      '@minigame/core':
+        specifier: workspace:^
+        version: link:../core
+
   packages/snake:
     dependencies:
       '@minigame/core':
