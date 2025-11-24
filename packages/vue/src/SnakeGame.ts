@@ -1,4 +1,4 @@
-import { defineComponent, ref, onMounted, onUnmounted, watch, type PropType } from 'vue';
+import { defineComponent, ref, onMounted, onUnmounted, watch, h, type PropType } from 'vue';
 import { SnakeGame as SnakeGameVanilla } from '@minigame/snake';
 import type { GameConfig } from '@minigame/core';
 
@@ -73,5 +73,11 @@ export default defineComponent({
     
     return { canvasRef };
   },
-  template: '<canvas ref="canvasRef" :width="width" :height="height"></canvas>'
+  render() {
+    return h('canvas', {
+      ref: 'canvasRef',
+      width: this.width,
+      height: this.height
+    });
+  }
 });
