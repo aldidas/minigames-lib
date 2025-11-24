@@ -129,27 +129,13 @@ export class SnakeGame extends BaseGame<SnakeGameState> {
    * Called every frame
    */
   protected render(): void {
+    const rect = this.canvas.getBoundingClientRect();
+    const renderSize = Math.min(rect.width, rect.height);
+    this.cellSize = renderSize / this.GRID_SIZE;
+    
     // Clear canvas
     this.ctx.fillStyle = this.config.colors.background;
-    const rect = this.canvas.getBoundingClientRect();
     this.ctx.fillRect(0, 0, rect.width, rect.height);
-
-    // Draw grid (subtle)
-    this.ctx.strokeStyle = this.adjustAlpha(this.config.colors.text, 0.1);
-    this.ctx.lineWidth = 1;
-    for (let i = 0; i <= this.GRID_SIZE; i++) {
-      // Vertical lines
-      this.ctx.beginPath();
-      this.ctx.moveTo(i * this.cellSize, 0);
-      this.ctx.lineTo(i * this.cellSize, this.GRID_SIZE * this.cellSize);
-      this.ctx.stroke();
-
-      // Horizontal lines
-      this.ctx.beginPath();
-      this.ctx.moveTo(0, i * this.cellSize);
-      this.ctx.lineTo(this.GRID_SIZE * this.cellSize, i * this.cellSize);
-      this.ctx.stroke();
-    }
 
     // Draw snake
     this.snake.forEach((segment, index) => {
@@ -163,7 +149,7 @@ export class SnakeGame extends BaseGame<SnakeGameState> {
     });
 
     // Draw food
-    this.ctx.fillStyle = '#ff0000'; // Red food
+    this.ctx.fillStyle = '#ff0000';
     this.ctx.beginPath();
     this.ctx.arc(
       this.food.x * this.cellSize + this.cellSize / 2,
@@ -326,15 +312,4 @@ export class SnakeGame extends BaseGame<SnakeGameState> {
     this.canvas.removeEventListener('touchstart', this.touchStartHandler);
     this.canvas.removeEventListener('touchend', this.touchEndHandler);
   }
-
-  private adjustAlpha(color: string, alpha: number): string {
-    // Simple alpha adjustment for hex colors
-    if (color.startsWith('#')) {
-      const r = parseInt(color.slice(1, 3), 16);
-      const g = parseInt(color.slice(3, 5), 16);
-      const b = parseInt(color.slice(5, 7), 16);
-      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-    }
-    return color;
   }
-}

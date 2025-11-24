@@ -65,7 +65,7 @@ development_status:
   # Epic 4: MVP Game Implementations (5 stories)
   epic-4: backlog
   4-1-snake-game-package-setup: done
-  4-2-snake-game-implementation: ready-for-dev
+  4-2-snake-game-implementation: done
   4-3-pong-game-package-implementation: backlog
   4-4-breakout-game-package-implementation: backlog
   4-5-game-quality-error-handling: backlog

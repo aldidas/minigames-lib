@@ -187,11 +187,12 @@ export abstract class BaseGame<TState = any> extends EventEmitter {
   // Helper methods
 
   private setupCanvas(): void {
-    const dpr = window.devicePixelRatio || 1;
     const rect = this.canvas.getBoundingClientRect();
-
-    this.canvas.width = rect.width * dpr;
-    this.canvas.height = rect.height * dpr;
-    this.ctx.scale(dpr, dpr);
+    
+    // Set canvas size to match CSS dimensions
+    // Note: High-DPI scaling removed for now to avoid coordinate system issues
+    // Can be added back later with proper rendering support
+    this.canvas.width = rect.width;
+    this.canvas.height = rect.height;
   }
 }
