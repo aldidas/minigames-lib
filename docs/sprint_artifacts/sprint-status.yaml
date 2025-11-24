@@ -68,7 +68,7 @@ development_status:
   4-2-snake-game-implementation: done
   4-3-pong-game-package-implementation: done
   4-4-breakout-game-package-implementation: done
-  4-5-game-quality-error-handling: backlog
+  4-5-game-quality-error-handling: ready-for-dev
   epic-4-retrospective: optional
 
   # Epic 5: Documentation & Developer Experience (3 stories)
