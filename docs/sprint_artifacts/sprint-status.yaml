@@ -73,13 +73,13 @@ development_status:
 
   # Epic 5: Documentation & Developer Experience (3 stories)
   epic-5: backlog
-  5-1-core-package-readme: backlog
+  5-1-core-package-readme: done
   5-2-game-package-readmes-snake-pong-breakout: backlog
   5-3-root-repository-readme-examples: backlog
   epic-5-retrospective: optional
 
   # Epic 6: Framework Integrations (2 stories)
-  epic-6: backlog
+  epic-6: done
   6-1-react-wrapper-package: done
-  6-2-vue-wrapper-package: ready-for-dev
+  6-2-vue-wrapper-package: done
   epic-6-retrospective: optional
