@@ -72,10 +72,10 @@ development_status:
   epic-4-retrospective: optional
 
   # Epic 5: Documentation & Developer Experience (3 stories)
-  epic-5: backlog
+  epic-5: done
   5-1-core-package-readme: done
-  5-2-game-package-readmes-snake-pong-breakout: backlog
-  5-3-root-repository-readme-examples: backlog
+  5-2-game-package-readmes-snake-pong-breakout: done
+  5-3-root-repository-readme-examples: done
   epic-5-retrospective: optional
 
   # Epic 6: Framework Integrations (2 stories)
