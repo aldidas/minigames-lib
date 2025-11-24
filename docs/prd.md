@@ -157,6 +157,14 @@ The MVP delivers a production-ready library that agencies can immediately use fo
 - Migration guides between versions
 - Troubleshooting guide
 
+**Framework Wrappers**
+
+- `@minigame/react` - React component wrappers for all games
+- `@minigame/vue` - Vue 3 component wrappers for all games
+- Full TypeScript support with type definitions
+- Component-based API for easy framework integration
+- Comprehensive test coverage
+
 **Performance & Quality**
 
 - Performance monitoring utilities
@@ -449,13 +457,42 @@ Games must expose styling configuration:
 **FR71:** Console warnings alert developers to common misconfigurations  
 **FR72:** Library provides helpful TypeScript errors for incorrect API usage
 
+### Framework Wrappers
+
+**React Wrapper (@minigame/react)**
+
+**FR73:** Library provides React component wrappers for all games (SnakeGame, PongGame, BreakoutGame)  
+**FR74:** React components accept game configuration as props (config object)  
+**FR75:** React components emit standard React events: onGameStarted, onGameOver, onScoreUpdate, onGameFinished  
+**FR76:** React wrapper supports TypeScript with full type definitions for props and events  
+**FR77:** React components use component-based API (not hooks-based)  
+**FR78:** React wrapper does not require refs for game control (fully controlled by props/events)  
+**FR79:** React wrapper package is published to npm as `@minigame/react`  
+**FR80:** React wrapper has peer dependency on React 18+ (latest stable)
+
+**Vue Wrapper (@minigame/vue)**
+
+**FR81:** Library provides Vue 3 component wrappers for all games (SnakeGame, PongGame, BreakoutGame)  
+**FR82:** Vue components accept configuration via props (:config binding)  
+**FR83:** Vue components emit standard Vue events: @game-started, @game-over, @score-update, @game-finished  
+**FR84:** Vue wrapper supports TypeScript with full type definitions for props and events  
+**FR85:** Vue wrapper uses Vue 3 Composition API internally  
+**FR86:** Vue wrapper provides component syntax (template-based usage, not composables)  
+**FR87:** Vue wrapper does not support Vue 2  
+**FR88:** Vue wrapper package is published to npm as `@minigame/vue`  
+**FR89:** Vue wrapper has peer dependency on Vue 3.3+ (latest stable)
+
+**Framework Wrapper Quality**
+
+**FR90:** Both framework wrappers include comprehensive test coverage (unit tests for components)
+
 ### Monorepo Infrastructure
 
-**FR73:** Project uses pnpm workspace for monorepo management  
-**FR74:** Shared build configuration is centralized in root package  
-**FR75:** All packages follow consistent directory structure  
-**FR76:** Automated publishing workflow deploys all packages to npm  
-**FR77:** Development mode allows local testing across packages
+**FR91:** Project uses pnpm workspace for monorepo management  
+**FR92:** Shared build configuration is centralized in root package  
+**FR93:** All packages follow consistent directory structure  
+**FR94:** Automated publishing workflow deploys all packages to npm  
+**FR95:** Development mode allows local testing across packages
 
 ---
 

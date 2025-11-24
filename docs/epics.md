@@ -9,7 +9,7 @@
 
 ## Epic Structure Overview
 
-This document breaks down the 77 functional requirements from the PRD into 5 implementable epics, each delivering incremental value.
+This document breaks down the 95 functional requirements from the PRD into 6 implementable epics, each delivering incremental value.
 
 ### Epic Progression
 
@@ -18,6 +18,7 @@ This document breaks down the 77 functional requirements from the PRD into 5 imp
 3. **Build & Distribution Pipeline** → Makes packages publishable to npm
 4. **MVP Game Implementations** → Builds Snake, Pong, Breakout games
 5. **Documentation & Developer Experience** → Enables < 30 min integration
+6. **Framework Integrations** → React and Vue component wrappers
 
 ---
 
@@ -42,6 +43,10 @@ This document breaks down the 77 functional requirements from the PRD into 5 imp
 ### Epic 5: Documentation & Developer Experience
 
 **FRs Covered:** FR55-FR62 (Documentation)
+
+### Epic 6: Framework Integrations
+
+**FRs Covered:** FR73-FR90 (Framework Wrappers)
 
 ---
 
@@ -887,6 +892,217 @@ _Epic 5 Complete: 3 stories_
 
 ---
 
+## Epic 6: Framework Integrations
+
+**Goal:** Provide framework-specific wrappers for React and Vue, making games easily integrable in modern frontend applications.
+
+**Value Delivered:** Developers using React or Vue can install framework-native components instead of manually wrapping vanilla JS games.
+
+**FRs Covered:** FR73-FR90
+
+### Story 6.1: React Wrapper Package
+
+**User Story:**
+As a React developer,
+I want React component wrappers for all games,
+So that I can use games as native React components with props and events.
+
+**Acceptance Criteria:**
+
+Given all MVP games are complete
+When I create the React wrapper package
+Then:
+
+- packages/react/ structure created following monorepo pattern
+- package.json:
+  - name: "@minigame/react" (FR79)
+  - peerDependencies: react ^18.0.0 (FR80)
+  - dependencies: @minigame/core, @minigame/snake, @minigame/pong, @minigame/breakout
+- Component-based API implemented (not hooks) (FR77)
+- React components for all games:
+  - `<SnakeGame />` (FR73)
+  - `<PongGame />` (FR73)
+  - `<BreakoutGame />` (FR73)
+- Components accept config as props (FR74):
+  ```tsx
+  <SnakeGame
+    config={{
+      colors: { primary: '#3b82f6', ... },
+      ...
+    }}
+  />
+  ```
+- Components emit React events (FR75):
+  - `onGameStarted={(data) => ...}`
+  - `onGameOver={(data) => ...}`
+  - `onScoreUpdate={(data) => ...}`
+  - `onGameFinished={(data) => ...}`
+- Full TypeScript support (FR76):
+  - Prop types exported
+  - Event callback types exported
+  - Full IntelliSense support
+- No refs required for game control (FR78)
+- Build outputs (ESM, CJS, types)
+- Comprehensive unit tests using React Testing Library (FR90)
+- README.md with:
+  - Installation instructions
+  - Quick start example
+  - Props API reference
+  - Event handling examples
+  - TypeScript examples
+
+**Prerequisites:** Epic 4 (all games complete)
+
+**Technical Notes:**
+
+- FR73-FR80: React wrapper requirements
+- Use React 18+ (latest stable)
+- Components use useEffect/useRef internally to manage game lifecycle
+- Canvas ref managed internally
+- Props changes trigger game reinitialization
+- Clean up on unmount
+- Example implementation:
+
+  ```tsx
+  export function SnakeGame({ config, onGameStarted, onGameOver, ... }: SnakeGameProps) {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const gameRef = useRef<SnakeGameInstance | null>(null);
+
+    useEffect(() => {
+      if (!canvasRef.current) return;
+
+      const game = new SnakeGameVanilla(canvasRef.current, config);
+      game.on('gameStarted', onGameStarted);
+      game.on('gameOver', onGameOver);
+      // ... other events
+      gameRef.current = game;
+
+      return () => {
+        game.stop();
+        game.cleanup();
+      };
+    }, [config]);
+
+    return <canvas ref={canvasRef} />;
+  }
+  ```
+
+---
+
+### Story 6.2: Vue Wrapper Package
+
+**User Story:**
+As a Vue developer,
+I want Vue 3 component wrappers for all games,
+So that I can use games as native Vue components with reactive props and emits.
+
+**Acceptance Criteria:**
+
+Given all MVP games are complete
+When I create the Vue wrapper package
+Then:
+
+- packages/vue/ structure created following monorepo pattern
+- package.json:
+  - name: "@minigame/vue" (FR88)
+  - peerDependencies: vue ^3.3.0 (FR89)
+  - dependencies: @minigame/core, @minigame/snake, @minigame/pong, @minigame/breakout
+- No Vue 2 support (FR87)
+- Vue 3 Composition API used internally (FR85)
+- Component syntax for template usage (FR86):
+  ```vue
+  <SnakeGame
+    :config="gameConfig"
+    @game-started="handleStart"
+    @game-over="handleGameOver"
+  />
+  ```
+- Vue components for all games (FR81):
+  - `SnakeGame` component
+  - `PongGame` component
+  - `BreakoutGame` component
+- Components accept config via props (FR82):
+  - :config prop binding
+  - Reactive updates on config changes
+- Components emit Vue events (FR83):
+  - @game-started
+  - @game-over
+  - @score-update
+  - @game-finished
+- Full TypeScript support (FR84):
+  - Prop types defined
+  - Emit types defined
+  - Component types exported
+  - Full IntelliSense in templates
+- Build outputs (ESM, CJS, types)
+- Comprehensive unit tests using Vitest + Vue Test Utils (FR90)
+- README.md with:
+  - Installation instructions
+  - Quick start example (SFC + setup script)
+  - Props API reference
+  - Events reference
+  - TypeScript usage examples
+
+**Prerequisites:** Story 6.1
+
+**Technical Notes:**
+
+- FR81-FR89: Vue wrapper requirements
+- Use Vue 3.3+ (latest stable)
+- Use Composition API internally with defineComponent
+- Manage canvas with template refs
+- Watch for prop changes to reinitialize game
+- onUnmounted cleanup
+- Example implementation:
+
+  ```ts
+  export default defineComponent({
+    name: "SnakeGame",
+    props: {
+      config: {
+        type: Object as PropType<GameConfig>,
+        default: () => ({}),
+      },
+    },
+    emits: ["game-started", "game-over", "score-update", "game-finished"],
+    setup(props, { emit }) {
+      const canvasRef = ref<HTMLCanvasElement | null>(null);
+      const game = ref<SnakeGameInstance | null>(null);
+
+      onMounted(() => {
+        if (!canvasRef.value) return;
+
+        game.value = new SnakeGameVanilla(canvasRef.value, props.config);
+        game.value.on("gameStarted", (data) => emit("game-started", data));
+        game.value.on("gameOver", (data) => emit("game-over", data));
+        // ... other events
+      });
+
+      watch(
+        () => props.config,
+        () => {
+          // Reinitialize on config change
+        },
+        { deep: true }
+      );
+
+      onUnmounted(() => {
+        game.value?.stop();
+        game.value?.cleanup();
+      });
+
+      return { canvasRef };
+    },
+    template: '<canvas ref="canvasRef"></canvas>',
+  });
+  ```
+
+---
+
+_Epic 6 Complete: 2 stories_
+
+---
+
 ## FR Coverage Matrix
 
 | FR#       | Description                       | Epic | Story         |
@@ -960,29 +1176,48 @@ _Epic 5 Complete: 3 stories_
 | FR70      | Clear error messages              | 4    | 4.5           |
 | FR71      | Console warnings                  | 4    | 4.5           |
 | FR72      | TypeScript errors                 | 4    | 4.5           |
-| FR73      | pnpm workspace                    | 1    | 1.1           |
-| FR74      | Shared build config               | 1    | 1.3, 1.4      |
-| FR75      | Consistent structure              | 1    | 1.1, 3.1      |
-| FR76      | Automated publishing              | 3    | 3.3           |
-| FR77      | Local testing                     | 1    | 1.4           |
+| FR73      | React component wrappers          | 6    | 6.1           |
+| FR74      | React config as props             | 6    | 6.1           |
+| FR75      | React events                      | 6    | 6.1           |
+| FR76      | React TypeScript support          | 6    | 6.1           |
+| FR77      | React component-based API         | 6    | 6.1           |
+| FR78      | React no refs required            | 6    | 6.1           |
+| FR79      | @minigame/react package           | 6    | 6.1           |
+| FR80      | React peer dependency             | 6    | 6.1           |
+| FR81      | Vue component wrappers            | 6    | 6.2           |
+| FR82      | Vue config props                  | 6    | 6.2           |
+| FR83      | Vue events                        | 6    | 6.2           |
+| FR84      | Vue TypeScript support            | 6    | 6.2           |
+| FR85      | Vue Composition API               | 6    | 6.2           |
+| FR86      | Vue component syntax              | 6    | 6.2           |
+| FR87      | Vue 3 only (no Vue 2)             | 6    | 6.2           |
+| FR88      | @minigame/vue package             | 6    | 6.2           |
+| FR89      | Vue peer dependency               | 6    | 6.2           |
+| FR90      | Framework wrapper tests           | 6    | 6.1, 6.2      |
+| FR91      | pnpm workspace                    | 1    | 1.1           |
+| FR92      | Shared build config               | 1    | 1.3, 1.4      |
+| FR93      | Consistent structure              | 1    | 1.1, 3.1      |
+| FR94      | Automated publishing              | 3    | 3.3           |
+| FR95      | Local testing                     | 1    | 1.4           |
 
-**Total Coverage:** All 77 functional requirements mapped to stories ✅
+**Total Coverage:** All 95 functional requirements mapped to stories ✅
 
 ---
 
 ## Epic Summary
 
-| Epic                                        | Stories        | FRs Covered                | Value Delivered                      |
-| ------------------------------------------- | -------------- | -------------------------- | ------------------------------------ |
-| **1. Foundation & Infrastructure**          | 5              | FR73-FR77                  | Working monorepo with build tools    |
-| **2. Core Package - Game Framework**        | 6              | FR1-FR24, FR36-FR41, FR52  | @minigame/core framework installable |
-| **3. Build & Distribution Pipeline**        | 3              | FR42-FR50, FR54, FR63-FR68 | Packages publishable to npm          |
-| **4. MVP Game Implementations**             | 5              | FR25-FR31, FR69-FR72       | Snake, Pong, Breakout games working  |
-| **5. Documentation & Developer Experience** | 3              | FR55-FR62                  | < 30 min integration achieved        |
-| **TOTAL**                                   | **22 stories** | **All 77 FRs**             | **Production-ready library**         |
+| Epic                                        | Stories        | FRs Covered                | Value Delivered                           |
+| ------------------------------------------- | -------------- | -------------------------- | ----------------------------------------- |
+| **1. Foundation & Infrastructure**          | 5              | FR91-FR95                  | Working monorepo with build tools         |
+| **2. Core Package - Game Framework**        | 6              | FR1-FR24, FR36-FR41, FR52  | @minigame/core framework installable      |
+| **3. Build & Distribution Pipeline**        | 3              | FR42-FR50, FR54, FR63-FR68 | Packages publishable to npm               |
+| **4. MVP Game Implementations**             | 5              | FR25-FR31, FR69-FR72       | Snake, Pong, Breakout games working       |
+| **5. Documentation & Developer Experience** | 3              | FR55-FR62                  | < 30 min integration achieved             |
+| **6. Framework Integrations**               | 2              | FR73-FR90                  | React & Vue wrappers available            |
+| **TOTAL**                                   | **24 stories** | **All 95 FRs**             | **Production-ready library + frameworks** |
 
 ---
 
-## Status: COMPLETE - Ready for Implementation
+## Status: READY FOR EPIC 6 IMPLEMENTATION
 
-All 5 epics fully detailed with 22 implementable stories covering all 77 functional requirements from the PRD.
+All 6 epics fully detailed with 24 implementable stories covering all 95 functional requirements from the PRD.

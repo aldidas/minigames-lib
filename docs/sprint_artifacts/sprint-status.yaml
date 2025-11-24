@@ -68,7 +68,7 @@ development_status:
   4-2-snake-game-implementation: done
   4-3-pong-game-package-implementation: done
   4-4-breakout-game-package-implementation: done
-  4-5-game-quality-error-handling: ready-for-dev
+  4-5-game-quality-error-handling: done
   epic-4-retrospective: optional
 
   # Epic 5: Documentation & Developer Experience (3 stories)
@@ -77,3 +77,9 @@ development_status:
   5-2-game-package-readmes-snake-pong-breakout: backlog
   5-3-root-repository-readme-examples: backlog
   epic-5-retrospective: optional
+
+  # Epic 6: Framework Integrations (2 stories)
+  epic-6: backlog
+  6-1-react-wrapper-package: backlog
+  6-2-vue-wrapper-package: backlog
+  epic-6-retrospective: optional
