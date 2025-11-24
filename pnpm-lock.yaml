@@ -70,6 +70,25 @@ importers:
         specifier: ^7.2.4
         version: 7.2.4(@types/node@24.10.1)
 
+  examples/vanilla-demo:
+    dependencies:
+      '@minigame/breakout':
+        specifier: workspace:*
+        version: link:../../packages/breakout
+      '@minigame/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@minigame/pong':
+        specifier: workspace:*
+        version: link:../../packages/pong
+      '@minigame/snake':
+        specifier: workspace:*
+        version: link:../../packages/snake
+    devDependencies:
+      vite:
+        specifier: ^7.2.4
+        version: 7.2.4(@types/node@24.10.1)
+
   examples/vue-demo:
     dependencies:
       '@minigame/core':

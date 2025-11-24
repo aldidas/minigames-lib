@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minigames Library - Vanilla JS Demo</title>
+  </head>
+  <body>
+    <div class="app">
+      <h1>🎮 Minigames Library - Vanilla JS Demo</h1>
+      <p class="subtitle">All three games running with vanilla JavaScript + Vite</p>
+
+      <div class="games-grid">
+        <!-- Snake Game -->
+        <div class="game-card">
+          <h2>🐍 Snake Game</h2>
+          <div class="score" id="snakeScore">Score: 0</div>
+          <canvas id="snakeCanvas" width="400" height="400"></canvas>
+          <div class="controls">
+            <button id="snakeStart">Start</button>
+            <button id="snakePause">Pause</button>
+            <button id="snakeResume">Resume</button>
+            <button id="snakeStop">Stop</button>
+          </div>
+          <p class="instructions">Controls: Arrow keys or WASD</p>
+        </div>
+
+        <!-- Pong Game -->
+        <div class="game-card">
+          <h2>🏓 Pong Game</h2>
+          <div class="score" id="pongScore">Player: 0 | AI: 0</div>
+          <canvas id="pongCanvas" width="400" height="400"></canvas>
+          <div class="controls">
+            <button id="pongStart">Start</button>
+            <button id="pongPause">Pause</button>
+            <button id="pongResume">Resume</button>
+            <button id="pongStop">Stop</button>
+          </div>
+          <p class="instructions">Controls: Arrow Up/Down or W/S</p>
+        </div>
+
+        <!-- Breakout Game -->
+        <div class="game-card">
+          <h2>🧱 Breakout Game</h2>
+          <div class="score" id="breakoutScore">Score: 0 | Lives: 3</div>
+          <canvas id="breakoutCanvas" width="400" height="400"></canvas>
+          <div class="controls">
+            <button id="breakoutStart">Start</button>
+            <button id="breakoutPause">Pause</button>
+            <button id="breakoutResume">Resume</button>
+            <button id="breakoutStop">Stop</button>
+          </div>
+          <p class="instructions">Controls: Arrow Left/Right or A/D</p>
+        </div>
+      </div>
+
+      <div class="info">
+        <p><strong>Framework:</strong> Vanilla JavaScript (ES Modules)</p>
+        <p><strong>Bundler:</strong> Vite</p>
+        <p><strong>Features:</strong> Event system, game controls, score tracking</p>
+      </div>
+    </div>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
