@@ -3,7 +3,7 @@
 **Epic:** Framework Integrations  
 **Story ID:** 6.2  
 **Story Key:** 6-2-vue-wrapper-package  
-**Status:** drafted  
+**Status:** done  
 **Created:** 2025-11-24
 
 ---
@@ -49,6 +49,9 @@ So that I can use games as native Vue components with reactive props and emits.
   - `BreakoutGame`
 - Each component:
   - Uses `defineComponent` from Vue 3
+  - Supports manual control via template refs (start, stop, pause, resume, mute, unmute)
+  - Exposes game control methods via expose() API
+  - autoStart prop (default: true) to control auto-start behavior
   - Manages canvas with template ref
   - Cleans up on `onUnmounted`
 
@@ -161,32 +164,43 @@ export default defineComponent({
       type: Number,
       default: 600,
     },
+    autoStart: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: ["game-started", "game-over", "score-update", "game-finished"],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const canvasRef = ref<HTMLCanvasElement | null>(null);
     const game = ref<SnakeGameVanilla | null>(null);
 
-    onMounted(() => {
+    const initGame = () => {
       if (!canvasRef.value) return;
+
+      if (game.value) {
+        game.value.stop();
+      }
 
       game.value = new SnakeGameVanilla(canvasRef.value, props.config);
       game.value.on("gameStarted", (data: any) => emit("game-started", data));
       game.value.on("gameOver", (data: any) => emit("game-over", data));
       game.value.on("scoreUpdate", (data: any) => emit("score-update", data));
       game.value.on("gameFinished", (data: any) => emit("game-finished", data));
-      game.value.start();
+
+      // Auto-start if enabled
+      if (props.autoStart) {
+        game.value.start();
+      }
+    };
+
+    onMounted(() => {
+      initGame();
     });
 
     watch(
       () => props.config,
       () => {
-        // Reinitialize on config change
-        if (game.value && canvasRef.value) {
-          game.value.stop();
-          game.value = new SnakeGameVanilla(canvasRef.value, props.config);
-          game.value.start();
-        }
+        initGame();
       },
       { deep: true }
     );
@@ -195,10 +209,52 @@ export default defineComponent({
       game.value?.stop();
     });
 
+    // Expose game control methods to parent component
+    expose({
+      start: () => game.value?.start(),
+      stop: () => game.value?.stop(),
+      pause: () => game.value?.pause(),
+      resume: () => game.value?.resume(),
+      mute: () => game.value?.mute(),
+      unmute: () => game.value?.unmute(),
+      setPlayerName: (name: string) => game.value?.setPlayerName(name),
+    });
+
     return { canvasRef };
   },
   template: '<canvas ref="canvasRef" :width="width" :height="height"></canvas>',
 });
+```
+
+### Manual Control Usage Example
+
+```vue
+<script setup lang="ts">
+import { ref } from "vue";
+import { SnakeGame } from "@minigame/vue";
+
+const gameRef = ref();
+
+const handleScoreUpdate = (data) => {
+  console.log("Score:", data.score);
+};
+</script>
+
+<template>
+  <div>
+    <SnakeGame
+      ref="gameRef"
+      :autoStart="false"
+      @score-update="handleScoreUpdate"
+    />
+    <div>
+      <button @click="gameRef?.start()">Start</button>
+      <button @click="gameRef?.pause()">Pause</button>
+      <button @click="gameRef?.resume()">Resume</button>
+      <button @click="gameRef?.stop()">Stop</button>
+    </div>
+  </div>
+</template>
 ```
 
 ---
