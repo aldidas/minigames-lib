@@ -3,7 +3,7 @@
 **Epic:** Framework Integrations  
 **Story ID:** 6.1  
 **Story Key:** 6-1-react-wrapper-package  
-**Status:** drafted  
+**Status:** done  
 **Created:** 2025-11-24
 
 ---
@@ -47,8 +47,10 @@ So that I can use games as native React components with props and events.
   - `BreakoutGame`
 - Each component:
   - Accepts `config` prop (FR74)
+  - Supports manual control via refs (start, stop, pause, resume, mute, unmute)
+  - Exposes GameHandle interface for external control
+  - autoStart prop (default: true) to control auto-start behavior
   - Manages canvas ref internally
-  - No refs required for game control (FR78)
   - Cleans up on unmount
 
 ### AC3: Props & Events
@@ -75,6 +77,7 @@ So that I can use games as native React components with props and events.
 - Full TypeScript support (FR76)
 - Exported types:
   - `SnakeGameProps`, `PongGameProps`, `BreakoutGameProps`
+  - `SnakeGameHandle`, `PongGameHandle`, `BreakoutGameHandle` (for manual control)
   - Event callback types
   - Re-export GameConfig from @minigame/core
 - No `any` usage in public APIs
@@ -199,7 +202,7 @@ So that I can use games as native React components with props and events.
 ### Component Implementation Pattern
 
 ```tsx
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import { SnakeGame as SnakeGameVanilla } from "@minigame/snake";
 import type { GameConfig, GameOverData, ScoreUpdateData } from "@minigame/core";
 
@@ -209,40 +212,106 @@ export interface SnakeGameProps {
   onGameOver?: (data: GameOverData) => void;
   onScoreUpdate?: (data: ScoreUpdateData) => void;
   onGameFinished?: (data: any) => void;
+  autoStart?: boolean; // default: true
 }
 
-export function SnakeGame({
-  config,
-  onGameStarted,
-  onGameOver,
-  onScoreUpdate,
-  onGameFinished,
-}: SnakeGameProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const gameRef = useRef<SnakeGameVanilla | null>(null);
+export interface SnakeGameHandle {
+  start: () => void;
+  stop: () => void;
+  pause: () => void;
+  resume: () => void;
+  mute: () => void;
+  unmute: () => void;
+  setPlayerName: (name: string) => void;
+}
 
-  useEffect(() => {
-    if (!canvasRef.current) return;
+export const SnakeGame = forwardRef<SnakeGameHandle, SnakeGameProps>(
+  function SnakeGame(
+    {
+      config,
+      onGameStarted,
+      onGameOver,
+      onScoreUpdate,
+      onGameFinished,
+      autoStart = true,
+    },
+    ref
+  ) {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const gameRef = useRef<SnakeGameVanilla | null>(null);
 
-    // Create game instance
-    const game = new SnakeGameVanilla(canvasRef.current, config);
+    // Expose game control methods via ref
+    useImperativeHandle(ref, () => ({
+      start: () => gameRef.current?.start(),
+      stop: () => gameRef.current?.stop(),
+      pause: () => gameRef.current?.pause(),
+      resume: () => gameRef.current?.resume(),
+      mute: () => gameRef.current?.mute(),
+      unmute: () => gameRef.current?.unmute(),
+      setPlayerName: (name: string) => gameRef.current?.setPlayerName(name),
+    }));
 
-    // Wire up event callbacks
-    if (onGameStarted) game.on("gameStarted", onGameStarted);
-    if (onGameOver) game.on("gameOver", onGameOver);
-    if (onScoreUpdate) game.on("scoreUpdate", onScoreUpdate);
-    if (onGameFinished) game.on("gameFinished", onGameFinished);
+    useEffect(() => {
+      if (!canvasRef.current) return;
 
-    gameRef.current = game;
-    game.start();
+      // Create game instance
+      const game = new SnakeGameVanilla(canvasRef.current, config);
 
-    // Cleanup
-    return () => {
-      game.stop();
-    };
-  }, [config, onGameStarted, onGameOver, onScoreUpdate, onGameFinished]);
+      // Wire up event callbacks
+      if (onGameStarted) game.on("gameStarted", onGameStarted);
+      if (onGameOver) game.on("gameOver", onGameOver);
+      if (onScoreUpdate) game.on("scoreUpdate", onScoreUpdate);
+      if (onGameFinished) game.on("gameFinished", onGameFinished);
 
-  return <canvas ref={canvasRef} width={600} height={600} />;
+      gameRef.current = game;
+
+      // Auto-start if enabled
+      if (autoStart) {
+        game.start();
+      }
+
+      // Cleanup
+      return () => {
+        game.stop();
+      };
+    }, [
+      config,
+      onGameStarted,
+      onGameOver,
+      onScoreUpdate,
+      onGameFinished,
+      autoStart,
+    ]);
+
+    return <canvas ref={canvasRef} width={600} height={600} />;
+  }
+);
+```
+
+### Manual Control Usage Example
+
+```tsx
+import { useRef } from "react";
+import { SnakeGame, type SnakeGameHandle } from "@minigame/react";
+
+function App() {
+  const gameRef = useRef<SnakeGameHandle>(null);
+
+  return (
+    <div>
+      <SnakeGame
+        ref={gameRef}
+        autoStart={false}
+        onScoreUpdate={(data) => console.log("Score:", data.score)}
+      />
+      <div>
+        <button onClick={() => gameRef.current?.start()}>Start</button>
+        <button onClick={() => gameRef.current?.pause()}>Pause</button>
+        <button onClick={() => gameRef.current?.resume()}>Resume</button>
+        <button onClick={() => gameRef.current?.stop()}>Stop</button>
+      </div>
+    </div>
+  );
 }
 ```
 
@@ -332,13 +401,15 @@ Components render canvas with fixed dimensions (600x600). Consider:
 - Responsive sizing based on container
 - CSS styling support
 
-### Event Types
+### Manual Control
 
-Re-use event types from @minigame/core:
+Components use `forwardRef` and `useImperativeHandle` to expose game control methods:
 
-- GameOverData
-- ScoreUpdateData
-- Import from core package to ensure consistency
+- `start()`, `stop()`, `pause()`, `resume()` - Game lifecycle control
+- `mute()`, `unmute()` - Audio control
+- `setPlayerName(name)` - Set player identifier
+
+This implements FR1-FR4 (uniform API) for React framework wrappers.
 
 ---
 
