@@ -28,17 +28,19 @@
     "react": "^18.0.0"
   },
   "dependencies": {
+    "@minigame/breakout": "workspace:*",
     "@minigame/core": "workspace:*",
-    "@minigame/snake": "workspace:*",
     "@minigame/pong": "workspace:*",
-    "@minigame/breakout": "workspace:*"
+    "@minigame/snake": "workspace:*"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^14.1.2",
     "@types/react": "^18.2.45",
     "@vitejs/plugin-react": "^4.2.1",
     "jsdom": "^23.0.1",
-    "react": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "vitest": "^1.0.4"
   }
 }
