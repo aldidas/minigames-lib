@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { PongGame as PongGameVanilla } from '@minigame/pong';
 import type { GameConfig, GameOverData, ScoreUpdateData } from '@minigame/core';
 
@@ -20,6 +20,21 @@ export interface PongGameProps {
   width?: number;
   /** Canvas height */
   height?: number;
+  /** Whether to auto-start the game on mount (default: true) */
+  autoStart?: boolean;
+}
+
+/**
+ * Ref handle exposed by PongGame component for manual control
+ */
+export interface PongGameHandle {
+  start: () => void;
+  stop: () => void;
+  pause: () => void;
+  resume: () => void;
+  mute: () => void;
+  unmute: () => void;
+  setPlayerName: (name: string) => void;
 }
 
 /**
@@ -27,44 +42,73 @@ export interface PongGameProps {
  * 
  * @example
  * ```tsx
+ * const gameRef = useRef<PongGameHandle>(null);
+ * 
  * <PongGame
+ *   ref={gameRef}
  *   config={{ colors: { primary: '#10b981' } }}
  *   onScoreUpdate={(data) => console.log('Score:', data.score)}
+ *   autoStart={false}
  * />
+ * 
+ * // Control the game
+ * gameRef.current?.start();
+ * gameRef.current?.pause();
  * ```
  */
-export function PongGame({
-  config,
-  onGameStarted,
-  onGameOver,
-  onScoreUpdate,
-  onGameFinished,
-  width = 600,
-  height = 600,
-}: PongGameProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const gameRef = useRef<PongGameVanilla | null>(null);
+export const PongGame = forwardRef<PongGameHandle, PongGameProps>(
+  function PongGame(
+    {
+      config,
+      onGameStarted,
+      onGameOver,
+      onScoreUpdate,
+      onGameFinished,
+      width = 600,
+      height = 600,
+      autoStart = true,
+    },
+    ref
+  ) {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const gameRef = useRef<PongGameVanilla | null>(null);
 
-  useEffect(() => {
-    if (!canvasRef.current) return;
+    // Expose game control methods via ref
+    useImperativeHandle(ref, () => ({
+      start: () => gameRef.current?.start(),
+      stop: () => gameRef.current?.stop(),
+      pause: () => gameRef.current?.pause(),
+      resume: () => gameRef.current?.resume(),
+      mute: () => gameRef.current?.mute(),
+      unmute: () => gameRef.current?.unmute(),
+      setPlayerName: (name: string) => gameRef.current?.setPlayerName(name),
+    }));
 
-    // Create game instance
-    const game = new PongGameVanilla(canvasRef.current, config);
+    useEffect(() => {
+      if (!canvasRef.current) return;
 
-    // Wire up event callbacks (cast to any as game accepts proper types internally)
-    if (onGameStarted) game.on('gameStarted', onGameStarted as any);
-    if (onGameOver) game.on('gameOver', onGameOver as any);
-    if (onScoreUpdate) game.on('scoreUpdate', onScoreUpdate as any);
-    if (onGameFinished) game.on('gameFinished', onGameFinished as any);
+      // Create game instance
+      const game = new PongGameVanilla(canvasRef.current, config);
 
-    gameRef.current = game;
-    game.start();
+      // Wire up event callbacks (cast to any as game accepts proper types internally)
+      if (onGameStarted) game.on('gameStarted', onGameStarted as any);
+      if (onGameOver) game.on('gameOver', onGameOver as any);
+      if (onScoreUpdate) game.on('scoreUpdate', onScoreUpdate as any);
+      if (onGameFinished) game.on('gameFinished', onGameFinished as any);
 
-    // Cleanup
-    return () => {
-      game.stop();
-    };
-  }, [config, onGameStarted, onGameOver, onScoreUpdate, onGameFinished]);
+      gameRef.current = game;
+      
+      // Auto-start if enabled
+      if (autoStart) {
+        game.start();
+      }
 
-  return <canvas ref={canvasRef} width={width} height={height} />;
-}
+      // Cleanup
+      return () => {
+        game.stop();
+      };
+    }, [config, onGameStarted, onGameOver, onScoreUpdate, onGameFinished, autoStart]);
+
+    return <canvas ref={canvasRef} width={width} height={height} />;
+  }
+);

@@ -1,12 +1,25 @@
-import { useState } from 'react';
-import { SnakeGame, PongGame, BreakoutGame } from '@minigame/react';
-import type { GameOverData, ScoreUpdateData } from '@minigame/react';
+import { useState, useRef } from 'react';
+import {
+  SnakeGame,
+  PongGame,
+  BreakoutGame,
+  type SnakeGameHandle,
+  type PongGameHandle,
+  type BreakoutGameHandle,
+  type GameOverData,
+  type ScoreUpdateData,
+} from '@minigame/react';
 import './App.css';
 
 function App() {
   const [snakeScore, setSnakeScore] = useState(0);
   const [pongScore, setPongScore] = useState(0);
   const [breakoutScore, setBreakoutScore] = useState(0);
+
+  // Refs to manually control games
+  const snakeGameRef = useRef<SnakeGameHandle>(null);
+  const pongGameRef = useRef<PongGameHandle>(null);
+  const breakoutGameRef = useRef<BreakoutGameHandle>(null);
 
   const handleSnakeScoreUpdate = (data: ScoreUpdateData) => {
     setSnakeScore(data.score);
@@ -27,7 +40,7 @@ function App() {
   return (
     <div className="app">
       <h1>Minigames Library - React Demo</h1>
-      <p className="subtitle">Testing @minigame/react with all three games</p>
+      <p className="subtitle">Testing @minigame/react with manual game control</p>
 
       <div className="games-grid">
         {/* Snake Game */}
@@ -36,6 +49,7 @@ function App() {
           <p className="score">Score: {snakeScore}</p>
           <div className="canvas-container">
             <SnakeGame
+              ref={snakeGameRef}
               config={{
                 colors: {
                   primary: '#3b82f6',
@@ -48,7 +62,14 @@ function App() {
               onGameOver={handleGameOver('Snake')}
               width={400}
               height={400}
+              autoStart={false}
             />
+          </div>
+          <div className="controls-panel">
+            <button onClick={() => snakeGameRef.current?.start()}>Start</button>
+            <button onClick={() => snakeGameRef.current?.pause()}>Pause</button>
+            <button onClick={() => snakeGameRef.current?.resume()}>Resume</button>
+            <button onClick={() => snakeGameRef.current?.stop()}>Stop</button>
           </div>
           <p className="controls">Controls: Arrow keys or WASD</p>
         </div>
@@ -59,6 +80,7 @@ function App() {
           <p className="score">Score: {pongScore}</p>
           <div className="canvas-container">
             <PongGame
+              ref={pongGameRef}
               config={{
                 colors: {
                   primary: '#10b981',
@@ -71,7 +93,14 @@ function App() {
               onGameOver={handleGameOver('Pong')}
               width={400}
               height={400}
+              autoStart={false}
             />
+          </div>
+          <div className="controls-panel">
+            <button onClick={() => pongGameRef.current?.start()}>Start</button>
+            <button onClick={() => pongGameRef.current?.pause()}>Pause</button>
+            <button onClick={() => pongGameRef.current?.resume()}>Resume</button>
+            <button onClick={() => pongGameRef.current?.stop()}>Stop</button>
           </div>
           <p className="controls">Controls: Arrow Up/Down or W/S</p>
         </div>
@@ -82,6 +111,7 @@ function App() {
           <p className="score">Score: {breakoutScore}</p>
           <div className="canvas-container">
             <BreakoutGame
+              ref={breakoutGameRef}
               config={{
                 colors: {
                   primary: '#8b5cf6',
@@ -94,7 +124,14 @@ function App() {
               onGameOver={handleGameOver('Breakout')}
               width={400}
               height={400}
+              autoStart={false}
             />
+          </div>
+          <div className="controls-panel">
+            <button onClick={() => breakoutGameRef.current?.start()}>Start</button>
+            <button onClick={() => breakoutGameRef.current?.pause()}>Pause</button>
+            <button onClick={() => breakoutGameRef.current?.resume()}>Resume</button>
+            <button onClick={() => breakoutGameRef.current?.stop()}>Stop</button>
           </div>
           <p className="controls">Controls: Arrow Left/Right or A/D</p>
         </div>
@@ -108,7 +145,7 @@ function App() {
           <strong>Framework:</strong> @minigame/react (Component-based API)
         </p>
         <p>
-          <strong>Features:</strong> Props for config, events for game state, full TypeScript support
+          <strong>Features:</strong> Props for config, events for game state, full TypeScript support, manual game control (start, pause, resume, stop)
         </p>
       </div>
     </div>
