@@ -7,6 +7,11 @@ const snakeScore = ref(0);
 const pongScore = ref(0);
 const breakoutScore = ref(0);
 
+// Refs for manual game control
+const snakeGameRef = ref();
+const pongGameRef = ref();
+const breakoutGameRef = ref();
+
 const handleSnakeScoreUpdate = (data: ScoreUpdateData) => {
   snakeScore.value = data.score;
 };
@@ -26,8 +31,8 @@ const handleGameOver = (gameName: string) => (data: GameOverData) => {
 
 <template>
   <div class="app">
-    <h1>Minigames Library - Vue Demo</h1>
-    <p class="subtitle">Testing @minigame/vue with all three games</p>
+    <h1>Min igames Library - Vue Demo</h1>
+    <p class="subtitle">Testing @minigame/vue with manual game control</p>
 
     <div class="games-grid">
       <!-- Snake Game -->
@@ -36,6 +41,7 @@ const handleGameOver = (gameName: string) => (data: GameOverData) => {
         <p class="score">Score: {{ snakeScore }}</p>
         <div class="canvas-container">
           <SnakeGame
+            ref="snakeGameRef"
             :config="{
               colors: {
                 primary: '#3b82f6',
@@ -48,7 +54,14 @@ const handleGameOver = (gameName: string) => (data: GameOverData) => {
             @game-over="handleGameOver('Snake')"
             :width="400"
             :height="400"
+            :autoStart="false"
           />
+        </div>
+        <div class="controls-panel">
+          <button @click="snakeGameRef?.start()">Start</button>
+          <button @click="snakeGameRef?.pause()">Pause</button>
+          <button @click="snakeGameRef?.resume()">Resume</button>
+          <button @click="snakeGameRef?.stop()">Stop</button>
         </div>
         <p class="controls">Controls: Arrow keys or WASD</p>
       </div>
@@ -59,6 +72,7 @@ const handleGameOver = (gameName: string) => (data: GameOverData) => {
         <p class="score">Score: {{ pongScore }}</p>
         <div class="canvas-container">
           <PongGame
+            ref="pongGameRef"
             :config="{
               colors: {
                 primary: '#10b981',
@@ -71,7 +85,14 @@ const handleGameOver = (gameName: string) => (data: GameOverData) => {
             @game-over="handleGameOver('Pong')"
             :width="400"
             :height="400"
+            :autoStart="false"
           />
+        </div>
+        <div class="controls-panel">
+          <button @click="pongGameRef?.start()">Start</button>
+          <button @click="pongGameRef?.pause()">Pause</button>
+          <button @click="pongGameRef?.resume()">Resume</button>
+          <button @click="pongGameRef?.stop()">Stop</button>
         </div>
         <p class="controls">Controls: Arrow Up/Down or W/S</p>
       </div>
@@ -82,6 +103,7 @@ const handleGameOver = (gameName: string) => (data: GameOverData) => {
         <p class="score">Score: {{ breakoutScore }}</p>
         <div class="canvas-container">
           <BreakoutGame
+            ref="breakoutGameRef"
             :config="{
               colors: {
                 primary: '#8b5cf6',
@@ -94,7 +116,14 @@ const handleGameOver = (gameName: string) => (data: GameOverData) => {
             @game-over="handleGameOver('Breakout')"
             :width="400"
             :height="400"
+            :autoStart="false"
           />
+        </div>
+        <div class="controls-panel">
+          <button @click="breakoutGameRef?.start()">Start</button>
+          <button @click="breakoutGameRef?.pause()">Pause</button>
+          <button @click="breakoutGameRef?.resume()">Resume</button>
+          <button @click="breakoutGameRef?.stop()">Stop</button>
         </div>
         <p class="controls">Controls: Arrow Left/Right or A/D</p>
       </div>
@@ -108,7 +137,7 @@ const handleGameOver = (gameName: string) => (data: GameOverData) => {
         <strong>Framework:</strong> @minigame/vue (Composition API)
       </p>
       <p>
-        <strong>Features:</strong> Reactive props, Vue events, full TypeScript support
+        <strong>Features:</strong> Reactive props, Vue events, full TypeScript support, manual game control (start, pause, resume, stop)
       </p>
     </div>
   </div>
@@ -178,6 +207,36 @@ h1 {
   border: 2px solid #e5e7eb;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.controls-panel {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.controls-panel button {
+  padding: 0.5rem 1rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.controls-panel button:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+}
+
+.controls-panel button:active {
+  transform: translateY(0);
 }
 
 .controls {

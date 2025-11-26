@@ -7,10 +7,15 @@ import type { GameConfig } from '@minigame/core';
  * 
  * @example
  * ```vue
- * <BreakoutGame
- *   :config="{ colors: { primary: '#8b5cf6' } }"
- *   @game-over="handleGameOver"
- * />
+ * <template>
+ *   <BreakoutGame
+ *     ref="gameRef"
+ *     :config="{ colors: { primary: '#8b5cf6' } }"
+ *     :autoStart="false"
+ *     @game-over="handleGameOver"
+ *   />
+ *   <button @click="gameRef.start()">Start</button>
+ * </template>
  * ```
  */
 export default defineComponent({
@@ -30,10 +35,15 @@ export default defineComponent({
     height: {
       type: Number,
       default: 600
+    },
+    /** Whether to auto-start the game on mount (default: true) */
+    autoStart: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['game-started', 'game-over', 'score-update', 'game-finished'],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const canvasRef = ref<HTMLCanvasElement | null>(null);
     const game = ref<BreakoutGameVanilla | null>(null);
     
@@ -54,8 +64,10 @@ export default defineComponent({
       game.value.on('scoreUpdate', (data: any) => emit('score-update', data));
       game.value.on('gameFinished', (data: any) => emit('game-finished', data));
       
-      // Start the game
-      game.value.start();
+      // Auto-start if enabled
+      if (props.autoStart) {
+        game.value.start();
+      }
     };
     
     onMounted(() => {
@@ -69,6 +81,17 @@ export default defineComponent({
     
     onUnmounted(() => {
       game.value?.stop();
+    });
+    
+    // Expose game control methods to parent component
+    expose({
+      start: () => game.value?.start(),
+      stop: () => game.value?.stop(),
+      pause: () => game.value?.pause(),
+      resume: () => game.value?.resume(),
+      mute: () => game.value?.mute(),
+      unmute: () => game.value?.unmute(),
+      setPlayerName: (name: string) => game.value?.setPlayerName(name),
     });
     
     return { canvasRef };
