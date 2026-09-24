@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>minigames-lib — React integration</title>
+    <meta
+      name="description"
+      content="Snake, Pong and Breakout as React components from @minigame/react, with props, forwarded refs and event callbacks."
+    />
+    <link rel="icon" href="/favicon.svg" />
+    <script type="module" src="/src/react/main.tsx"></script>
+  </head>
+  <body>
+    <header class="nav">
+      <a class="nav__brand" href="/" aria-label="minigames-lib showcase">
+        <svg class="nav__mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="11.5" r="4.75" fill="#ffb454" />
+          <rect x="14.5" y="13" width="3" height="9.5" fill="#ffb454" />
+          <rect x="7.5" y="22" width="17" height="4.5" rx="2.25" fill="#93a1b5" />
+        </svg>
+        <span class="nav__brand-text">minigames-lib</span>
+      </a>
+      <nav class="nav__links" aria-label="Integration">
+        <a href="/">Vanilla</a>
+        <a href="/react/" aria-current="page">React</a>
+        <a href="/vue/">Vue</a>
+      </nav>
+      <a class="nav__repo" href="https://github.com/aldidas/minigames-lib">GitHub</a>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>React wrapper</h1>
+        <p class="hero__pitch">
+          <code>@minigame/react</code> wraps all three games as components with a config prop, four event callbacks,
+          and a forwarded ref that exposes the same uniform methods the vanilla API does. The page below is the whole
+          integration: no imperative game construction anywhere.
+        </p>
+        <div class="hero__actions">
+          <div class="install">
+            <code><b>npm install</b> @minigame/react react react-dom</code>
+            <button class="btn btn--sm" id="copy-install" type="button">Copy</button>
+          </div>
+          <a class="btn btn--ghost" href="/">Vanilla version</a>
+        </div>
+      </section>
+
+      <div id="root"></div>
+
+      <footer class="footer">
+        <p>minigames-lib showcase — React 19, consuming the built <code>@minigame/react</code> package.</p>
+        <p>
+          The same library with <a href="/">vanilla JavaScript</a> or a <a href="/vue/">Vue wrapper</a>.
+        </p>
+      </footer>
+    </main>
+  </body>
+</html>

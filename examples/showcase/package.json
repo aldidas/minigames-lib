@@ -1,0 +1,33 @@
+{
+  "name": "minigame-showcase",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Single deployable showcase for the minigames-lib monorepo: vanilla core API, React wrappers, and Vue wrappers.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit -p tsconfig.json && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@minigame/breakout": "workspace:*",
+    "@minigame/core": "workspace:*",
+    "@minigame/pong": "workspace:*",
+    "@minigame/react": "workspace:*",
+    "@minigame/snake": "workspace:*",
+    "@minigame/vue": "workspace:*",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "vue": "^3.5.24"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "typescript": "~5.9.3",
+    "vite": "^7.2.4",
+    "vue-tsc": "^3.1.4"
+  }
+}

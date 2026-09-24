@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>minigames-lib — Vue integration</title>
+    <meta
+      name="description"
+      content="Snake, Pong and Breakout as Vue 3 components from @minigame/vue, with props, exposed methods and component events."
+    />
+    <link rel="icon" href="/favicon.svg" />
+    <script type="module" src="/src/vue/main.ts"></script>
+  </head>
+  <body>
+    <header class="nav">
+      <a class="nav__brand" href="/" aria-label="minigames-lib showcase">
+        <svg class="nav__mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="11.5" r="4.75" fill="#ffb454" />
+          <rect x="14.5" y="13" width="3" height="9.5" fill="#ffb454" />
+          <rect x="7.5" y="22" width="17" height="4.5" rx="2.25" fill="#93a1b5" />
+        </svg>
+        <span class="nav__brand-text">minigames-lib</span>
+      </a>
+      <nav class="nav__links" aria-label="Integration">
+        <a href="/">Vanilla</a>
+        <a href="/react/">React</a>
+        <a href="/vue/" aria-current="page">Vue</a>
+      </nav>
+      <a class="nav__repo" href="https://github.com/aldidas/minigames-lib">GitHub</a>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Vue wrapper</h1>
+        <p class="hero__pitch">
+          <code>@minigame/vue</code> ships the same three games as Vue 3 components: a config prop, kebab-case events,
+          and <code>expose()</code>d methods for imperative control. The page below is the whole integration.
+        </p>
+        <div class="hero__actions">
+          <div class="install">
+            <code><b>npm install</b> @minigame/vue vue</code>
+            <button class="btn btn--sm" id="copy-install" type="button">Copy</button>
+          </div>
+          <a class="btn btn--ghost" href="/">Vanilla version</a>
+        </div>
+      </section>
+
+      <div id="app"></div>
+
+      <footer class="footer">
+        <p>minigames-lib showcase — Vue 3.5, consuming the built <code>@minigame/vue</code> package.</p>
+        <p>
+          The same library with <a href="/">vanilla JavaScript</a> or a <a href="/react/">React wrapper</a>.
+        </p>
+      </footer>
+    </main>
+  </body>
+</html>

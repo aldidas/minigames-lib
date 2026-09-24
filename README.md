@@ -98,41 +98,66 @@ Install only what you need. Each game is a separate package with the core as the
 
 ## 🎨 Examples & Demos
 
-Working demo applications showcasing different integration approaches:
+- **[Showcase](./examples/showcase)** — the deployable demo. Three pages in one static artifact, covering the vanilla JavaScript, React, and Vue integrations.
+- **[Vanilla JS Demo](./examples/vanilla-demo)** — the minimal reference. Three canvases, one script, nothing but Vite.
 
-- **[Vanilla JS Demo](./examples/vanilla-demo)** - Pure HTML/JavaScript implementation
-- **[React Demo](./examples/react-demo)** - React integration with hooks
-- **[Vue Demo](./examples/vue-demo)** - Vue 3 Composition API integration
+### The showcase
 
-### Running Demos Locally
+`examples/showcase` builds to a single static site:
+
+| Page      | Packages it consumes                                |
+| --------- | --------------------------------------------------- |
+| `/`       | `@minigame/core` plus snake, pong and breakout       |
+| `/react/` | `@minigame/react`                                   |
+| `/vue/`   | `@minigame/vue`                                     |
+
+The vanilla page drives all three games through the uniform API, applies live config
+changes, streams all six events into an event console, and samples `getGameState()`
+four times a second. The React and Vue pages present the same content through each
+wrapper's own idioms — props and refs, or props and exposed methods.
+
+### Running the demos locally
 
 ```bash
 # Clone the repository
-git clone https://github.com/scraperapi/minigames-lib.git
+git clone https://github.com/aldidas/minigames-lib.git
 cd minigames-lib
 
 # Install dependencies
 pnpm install
 
-# Run vanilla demo
-cd examples/vanilla-demo
+# Build every package (examples resolve @minigame/* to dist/, so this comes first)
+pnpm build
+
+# Hot reload: tsup --watch in every package, vite in every example
 pnpm dev
 
-# Run React demo
-cd examples/react-demo
-pnpm dev
-
-# Run Vue demo
-cd examples/vue-demo
-pnpm dev
+# Or just one example
+pnpm --filter minigame-showcase dev
+pnpm --filter vanilla-demo dev
 ```
+
+### Deploying the showcase
+
+The showcase is a static site; any host works. On Cloudflare Pages with Git integration:
+
+| Setting                 | Value                                     |
+| ----------------------- | ----------------------------------------- |
+| Root directory          | *(empty — build from the repo root)*      |
+| Build command           | `pnpm build:showcase`                     |
+| Build output directory  | `examples/showcase/dist`                  |
+| Environment variable    | `NODE_VERSION=22` (optional)              |
+
+`pnpm build:showcase` runs the tsup build for every package the showcase depends on,
+then the showcase's own `vue-tsc --noEmit && vite build`. Set `PUBLIC_BASE=/sub/path/`
+if the site is ever served from a subpath instead of a domain root.
 
 ## 🛠️ Development
 
 ### Prerequisites
 
-- Node.js 18+
-- pnpm 8+
+- Node.js 20+
+- pnpm 11 (pinned in `packageManager`; Corepack picks it up automatically)
 
 ### Setup
 
@@ -149,6 +174,9 @@ pnpm build
 ```bash
 # Build all packages
 pnpm build
+
+# Build the packages the showcase needs, then the showcase itself
+pnpm build:showcase
 
 # Watch mode for development (hot reload)
 pnpm dev
@@ -192,9 +220,8 @@ minigames-lib/
 │   ├── react/         # @minigame/react - React wrappers
 │   └── vue/           # @minigame/vue - Vue 3 wrappers
 ├── examples/
-│   ├── vanilla-demo/  # Vanilla JavaScript demo
-│   ├── react-demo/    # React demo application
-│   └── vue-demo/      # Vue 3 demo application
+│   ├── showcase/      # Deployable demo — vanilla, React and Vue pages
+│   └── vanilla-demo/  # Minimal vanilla JavaScript reference
 └── docs/              # Documentation and specifications
 ```
 
