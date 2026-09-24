@@ -4,8 +4,13 @@
   "private": true,
   "type": "module",
   "description": "TypeScript monorepo library providing headless, event-driven HTML5 arcade games for advertising agencies",
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "pnpm -r run build",
+    "build:showcase": "pnpm --filter minigame-showcase... run build",
     "dev": "pnpm -r run dev",
     "test": "pnpm -r run test",
     "lint": "pnpm -r run lint",

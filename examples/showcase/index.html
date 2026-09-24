@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>minigames-lib — vanilla JavaScript showcase</title>
+    <meta
+      name="description"
+      content="Play Snake, Pong and Breakout side by side using the @minigame vanilla API. Live configuration, event stream and state inspector for the minigames-lib HTML5 arcade game library."
+    />
+    <link rel="icon" href="/favicon.svg" />
+    <script type="module" src="/src/vanilla/main.ts"></script>
+  </head>
+  <body>
+    <header class="nav">
+      <a class="nav__brand" href="/" aria-label="minigames-lib showcase">
+        <svg class="nav__mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="11.5" r="4.75" fill="#ffb454" />
+          <rect x="14.5" y="13" width="3" height="9.5" fill="#ffb454" />
+          <rect x="7.5" y="22" width="17" height="4.5" rx="2.25" fill="#93a1b5" />
+        </svg>
+        <span class="nav__brand-text">minigames-lib</span>
+      </a>
+      <nav class="nav__links" aria-label="Integration">
+        <a href="/" aria-current="page">Vanilla</a>
+        <a href="/react/">React</a>
+        <a href="/vue/">Vue</a>
+      </nav>
+      <a class="nav__repo" href="https://github.com/aldidas/minigames-lib">GitHub</a>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Three games. One API.</h1>
+        <p class="hero__pitch">
+          Snake, Pong and Breakout built on the same base class. Each one starts, stops, pauses, resumes, mutes and
+          reports its own state through identical method names, and each one emits the same events — so you instrument
+          one game and you have instrumented all of them. Everything below is the real library: play all three,
+          retheme them, and watch the events come off.
+        </p>
+        <div class="hero__actions">
+          <div class="install">
+            <code><b>npm install</b> @minigame/core @minigame/snake</code>
+            <button class="btn btn--sm" id="copy-install" type="button">Copy</button>
+          </div>
+          <a class="btn btn--ghost" href="#embed">See the integration code</a>
+          <a class="btn btn--ghost" href="/react/">React version</a>
+        </div>
+      </section>
+
+      <section class="section" id="playground">
+        <div class="section__head">
+          <h2>Playground</h2>
+          <p class="section__note">
+            Three instances, one config object per instance, one control bar each. Change a value in the panel and the
+            games rebuild with it.
+          </p>
+        </div>
+        <div class="playground">
+          <aside id="config-panel"></aside>
+          <div class="games" id="games"></div>
+        </div>
+      </section>
+
+      <section class="section" id="events">
+        <div class="section__head">
+          <h2>Event stream</h2>
+          <p class="section__note">
+            Every <code>on()</code> subscription in this page writes here. This is the whole analytics story: a game
+            start, each score change, and how the round ended.
+          </p>
+        </div>
+        <div class="console">
+          <div class="console__bar">
+            <button class="btn btn--sm" type="button" data-filter="all" aria-pressed="true">All games</button>
+            <button class="btn btn--sm" type="button" data-filter="snake" aria-pressed="false">Snake</button>
+            <button class="btn btn--sm" type="button" data-filter="pong" aria-pressed="false">Pong</button>
+            <button class="btn btn--sm" type="button" data-filter="breakout" aria-pressed="false">Breakout</button>
+            <button class="btn btn--sm" type="button" id="log-clear">Clear</button>
+            <span class="console__count" id="log-count">0 events</span>
+          </div>
+          <div class="log" id="log" role="log" aria-live="polite" aria-label="Game events"></div>
+        </div>
+      </section>
+
+      <section class="section" id="state">
+        <div class="section__head">
+          <h2>getGameState()</h2>
+          <p class="section__note">
+            Sampled four times a second. Each game returns its own shape, typed by the same generic base class. The
+            library exposes no lifecycle getter, so the status chip on each card is inferred from the events above.
+          </p>
+        </div>
+        <div class="inspector" id="inspector"></div>
+      </section>
+
+      <section class="section" id="embed">
+        <div class="section__head">
+          <h2>Drop it into a page</h2>
+          <p class="section__note">
+            The three games differ in exactly one line: which class you construct. Pong takes an optional third
+            argument, <code>'pvai'</code> or <code>'pvp'</code>.
+          </p>
+        </div>
+        <div class="console">
+          <div class="console__bar">
+            <span class="section__note" id="snippet-label">Snake integration</span>
+            <button class="btn btn--sm" type="button" data-snippet="snake" aria-pressed="true">Snake</button>
+            <button class="btn btn--sm" type="button" data-snippet="pong" aria-pressed="false">Pong</button>
+            <button class="btn btn--sm" type="button" data-snippet="breakout" aria-pressed="false">Breakout</button>
+          </div>
+          <div class="code">
+            <pre id="snippet"></pre>
+            <button class="btn btn--icon code__copy" type="button" id="copy-snippet">Copy</button>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>minigames-lib showcase — vanilla JavaScript, no framework, no runtime dependencies in core.</p>
+        <p>
+          The same library with <a href="/react/">React</a> or <a href="/vue/">Vue</a> wrappers.
+        </p>
+      </footer>
+    </main>
+  </body>
+</html>
